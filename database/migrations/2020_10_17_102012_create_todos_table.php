@@ -15,6 +15,10 @@ class CreateTodosTable extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('company');
+            $table->dateTime('date');
+            $table->integer('interview_status');
+            $table->integer('result_status');
             $table->text('body');
             $table->timestamps();
         });
