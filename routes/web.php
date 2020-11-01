@@ -11,10 +11,13 @@
 |
 */
 
-// Route::get('/', function () {
+// DashboardRoute::get('/', function () {
 //     return view('welcome');
 // });
 
 
 Route::get('/','TodosController@index'); 
 Route::resource('todos','TodosController');
+Auth::routes();
+
+Route::get('/', 'HomeController@index')->name('home');

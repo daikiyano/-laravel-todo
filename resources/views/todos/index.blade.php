@@ -1,42 +1,42 @@
-<!doctype html>
-<html lang="ja">
-  <head>
-    <title>Jum Todoリスト</title>
-  <!-- 必要なメタタグ -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  </head>
-  <body>
-    <div class="container" style="margin-top:50px;">
-    <h1>就活ステータス</h1>
+@extends('layouts.app')
 
+@section('content')
+  <div class="container" style="margin-top:50px;">
+    <h1>就活ステータス</h1>
     <form action='{{ url('/todos')}}' method="post">
       {{csrf_field()}}
     <div class="form-group">
-    <label >企業名</label>
-    <input type="text" name="company"class="form-control" placeholder="企業名を記入してください" style="max-width:1000px;">
-    @if ($errors->first('company'))   <!-- ここ追加 -->
-        <p class="validation">※{{$errors->first('company')}}</p>
-    @endif
-      </div>
+      <label >企業名</label>
+      <input type="text" name="company"class="form-control" placeholder="企業名を記入してください" style="max-width:1000px;">
+        @if ($errors->first('company'))   <!-- ここ追加 -->
+            <p class="validation">※{{$errors->first('company')}}</p>
+        @endif
+    </div>
       <div class="form-group">
+      <label >次回選考日</label></br>
       <input type="datetime-local" id="meeting-time" name="date">
         <!-- <input name="date" type="date" /><input type="time" name="typ" min="09：00" max="17：30"> -->
+        @if ($errors->first('date'))   <!-- ここ追加 -->
+          <p class="validation">※{{$errors->first('date')}}</p>
+        @endif
       </div>
       
   <div class="form-group">
+  <label >選考結果</label>
     <select name="result_status" class="form-control">
-        <option value="0">選考結果</option>
-        <option value="1">選考中</option>
-        <option value="2">内定</option>
-        <option value="3">不合格</option> 
+        <option value="">選考結果を選択してください</option>
+        <option value=1>選考中</option>
+        <option value=2>内定</option>
+        <option value=3>不合格</option> 
       </select>
     </div>
+    @if ($errors->first('result_status'))   <!-- ここ追加 -->
+        <p class="validation">※{{$errors->first('result_status')}}</p>
+    @endif
   <div class="form-group">
+  <label >選考ステータス</label>
   <select name="interview_status" class="form-control">
-      <option value=0>選考ステータスをお選びください</option>
+      <option value="">選考ステータスをお選びください</option>
       <option value=1>説明会</option>
       <option value=2>カジュアル面談</option>
       <option value=3>グループディスカッション</option>
@@ -47,6 +47,9 @@
       <option value=8>最終面接</option>
     </select>
     </div>
+    @if ($errors->first('interview_status'))   <!-- ここ追加 -->
+        <p class="validation">※{{$errors->first('interview_status')}}</p>
+    @endif
     <div class="form-group">
     <label >メモ</label>
     <input type="text" name="body"class="form-control" placeholder="メモ" style="max-width:1000px;">
@@ -55,6 +58,7 @@
     @endif
   </div>
   <button type="submit" class="btn btn-primary">追加する</button>  </form>
+   
     <h1 style="margin-top:50px;">就活ステータス</h1>
     <table class="table table-striped" style="max-width:1000px; margin-top:20px;">
   <tbody>
@@ -103,14 +107,12 @@
       <span class="badge badge-pill badge-secondary">最終面接</span>
       @endif
       </td>
-      
-    
       <td>{{$todo->date}}</td>
       <td style="font-size: 10px;">{{$todo->body}}</td>
       <td><form action="{{ action('TodosController@edit', $todo) }}" method="post">
           {{ csrf_field() }}
           {{ method_field('get') }}
-          <button type="submit" class="btn btn-primary">編集</button>
+          <button type="submit" class="btn btn-primary btn-sm">編集</button>
       </form>
       </td>
 
@@ -118,43 +120,14 @@
       <td><form action="{{url('/todos', $todo->id)}}" method="post">
           {{ csrf_field() }}
           {{ method_field('delete') }}
-          <button type="submit" class="btn btn-danger">削除</button>
+          <button type="submit" class="btn btn-danger btn-sm">削除</button>
       </form>
       </td>
-
-      <!-- 削除した際にポップ画面で確認をする -->
-      <!-- <td><a class="del" data-id="{{ $todo->id }}" href="#">削除</a>
-        <form method="post" action='{{ url('/todos', $todo->id) }}' id="form_{{ $todo->id}}">
-          {{ csrf_field() }}
-          {{ method_field('delete') }}
-        </form>
-      </td> -->
     </tr>
     @endforeach
   </table>
+
 </div>
-  <!-- オプションのJavaScript -->
-  <!-- 最初にjQuery、次にPopper.js、次にBootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script>
-    (function() {
-  'use strict';
+  
 
-  var cmds = document.getElementsByClassName('del');
-  var i;
-
-  for (i = 0; i < cmds.length; i++) {
-    cmds[i].addEventListener('click', function(e) {
-      e.preventDefault();
-      if (confirm('are you sure?')) {
-        document.getElementById('form_' + this.dataset.id).submit();
-      }
-    });
-  }
-
-})();
-</script>
-  </body>
-</html>
+@endsection

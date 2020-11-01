@@ -15,6 +15,8 @@ class CreateTodosTable extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned(); // 登録者ID
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('company');
             $table->dateTime('date');
             $table->integer('interview_status');
