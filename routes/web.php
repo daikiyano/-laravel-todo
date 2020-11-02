@@ -21,3 +21,5 @@ Route::resource('todos','TodosController');
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+
+

@@ -22,10 +22,14 @@ class TodosController extends Controller
     public function index() {
         $carbon = Carbon::now();
         $user_id = Auth::id();
-        $todos = Todo::with('user')->where('user_id', $user_id)->where('date','>=',$carbon)->orderBy('date', 'asc')->get();
+        $results = Todo::with('user')->where('user_id', $user_id)->whereBetween('result_status', [2,3])->where('date','>=',$carbon)->orderBy('date', 'asc')->get();
+        $todos = Todo::with('user')->where('user_id', $user_id)->where('result_status',1)->where('date','>=',$carbon)->orderBy('date', 'asc')->get();
+        // $todos = Todo::with('user')->where('user_id', $user_id)->whereBetween('result_status', [2,3])->where('date','>=',$carbon)->orderBy('date', 'asc')->get();
         Log::debug(print_r($todos,true));
         // var_dump($todos);
-        return view('todos.index')->with('todos',$todos);
+        return view('todos.index')->with([
+                'todos' => $todos,
+                'results'=> $results]);
     }
 
     public function destroy(todo $todo) {

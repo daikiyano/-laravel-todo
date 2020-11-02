@@ -40,7 +40,7 @@
               <p class="validation">※{{$errors->first('interview_status')}}</p>
             @endif
         </div>
-        <input type="text" name="body"class="form-control" value="{{ $todo->body }}" style="max-width:1000px;">
+        <textarea type="text" name="body"class="form-control" value="{{ $todo->body }}" placeholder="メモ内容を記入してください" rows="4" cols="40"></textarea>
         @if ($errors->first('body'))   <!-- ここ追加 -->
           <p class="validation">※{{$errors->first('body')}}</p>
         @endif

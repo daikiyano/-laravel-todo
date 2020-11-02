@@ -52,7 +52,7 @@
     @endif
     <div class="form-group">
     <label >メモ</label>
-    <input type="text" name="body"class="form-control" placeholder="メモ" style="max-width:1000px;">
+    <textarea type="text" name="body"class="form-control" placeholder="メモ内容を記入してください" rows="4" cols="40"></textarea>
     @if ($errors->first('body'))   <!-- ここ追加 -->
         <p class="validation">※{{$errors->first('body')}}</p>
     @endif
@@ -60,7 +60,7 @@
   <button type="submit" class="btn btn-primary">追加する</button>  </form>
    
     <h1 style="margin-top:50px;">就活ステータス</h1>
-    <table class="table table-striped" style="max-width:1000px; margin-top:20px;">
+  <table class="table table-striped" style="max-width:1000px; margin-top:20px;">
   <tbody>
   <tr>
   <td>選考ステータス</td>
@@ -78,11 +78,11 @@
     <tr>
     <td> 
       @if ($todo->result_status == 1)
-      <span class="badge badge-pill badge-info">選考中</span> 
+      <span class="label label-primary">選考中</span> 
       @elseif ($todo->result_status == 2)
-      <span class="badge badge-pill badge-success">内定</span>
+      <span class="label label-success">内定</span>
       @elseif ($todo->result_status == 3)
-      <span class="badge badge-pill badge-danger">不合格</span>
+      <span class="label label-danger">不合格</span>
       @endif
       </td>
       <td>{{$todo->company}}</td>
@@ -90,21 +90,21 @@
       <!-- <td> <span class="badge badge-pill badge-success">説明会</span> </td> -->
       <td> 
       @if ($todo->interview_status == 1)
-      <span class="badge badge-pill badge-secondary">説明会</span> 
+      <span class="label label-success">説明会</span> 
       @elseif ($todo->interview_status == 2)
-      <span class="badge badge-pill badge-secondary">カジュアル面談</span>
+      <span class="label label-success">カジュアル面談</span>
       @elseif ($todo->interview_status == 3)
-      <span class="badge badge-pill badge-secondary">グループディスカッション</span>
+      <span class="label label-success">グループディスカッション</span>
       @elseif ($todo->interview_status == 4)
-      <span class="badge badge-pill badge-secondary">一次面接</span>
+      <span class="label label-success">一次面接</span>
       @elseif ($todo->interview_status == 5)
-      <span class="badge badge-pill badge-secondary">二次面接</span>
+      <span class="label label-success">二次面接</span>
       @elseif ($todo->interview_status == 6)
-      <span class="badge badge-pill badge-secondary">三次面接</span>
+      <span class="label label-success">三次面接</span>
       @elseif ($todo->interview_status == 7)
-      <span class="badge badge-pill badge-secondary">四次面接以降</span>
+      <span class="label label-success">四次面接以降</span>
       @elseif ($todo->interview_status == 8)
-      <span class="badge badge-pill badge-secondary">最終面接</span>
+      <span class="label label-success">最終面接</span>
       @endif
       </td>
       <td>{{$todo->date}}</td>
@@ -115,8 +115,6 @@
           <button type="submit" class="btn btn-primary btn-sm">編集</button>
       </form>
       </td>
-
-      <!-- 削除ボタン -->
       <td><form action="{{url('/todos', $todo->id)}}" method="post">
           {{ csrf_field() }}
           {{ method_field('delete') }}
@@ -127,7 +125,71 @@
     @endforeach
   </table>
 
-</div>
-  
+  <h1 style="margin-top:50px;">就活結果</h1>
+  <table class="table table-striped" style="max-width:1000px; margin-top:20px;">
+  <tbody>
+  <tr>
+  <td>選考ステータス</td>
+  <td>企業名</td>
+  <td>選考ステップ</td>
+  <td>次回面接日</td>
+  <td>メモ</td>
+  <td></td>
+  <td></td>
+  <td></td>
+ 
+  </tr>
+    @foreach ($results as $result)
+    <!-- <input type="datetime-local" id="meeting-time" value="{{$todo->date}}" name="date"> -->
+    <tr>
+    <td> 
+      @if ($result->result_status == 1)
+      <span class="label label-primary">選考中</span> 
+      @elseif ($result->result_status == 2)
+      <span class="label label-success">内定</span>
+      @elseif ($result->result_status == 3)
+      <span class="label label-danger">不合格</span>
+      @endif
+      </td>
+      <td>{{$result->company}}</td>
+      <!-- {{$todo->interview_status}} -->
+      <!-- <td> <span class="badge badge-pill badge-success">説明会</span> </td> -->
+      <td> 
+      @if ($result->interview_status == 1)
+      <span class="label label-success">説明会</span> 
+      @elseif ($result->interview_status == 2)
+      <span class="label label-success">カジュアル面談</span>
+      @elseif ($result->interview_status == 3)
+      <span class="label label-success">グループディスカッション</span>
+      @elseif ($result->interview_status == 4)
+      <span class="label label-success">一次面接</span>
+      @elseif ($result->interview_status == 5)
+      <span class="label label-success">二次面接</span>
+      @elseif ($result->interview_status == 6)
+      <span class="label label-success">三次面接</span>
+      @elseif ($result->interview_status == 7)
+      <span class="label label-success">四次面接以降</span>
+      @elseif ($result->interview_status == 8)
+      <span class="label label-success">最終面接</span>
+      @endif
+      </td>
+      <td>{{$result->date}}</td>
+      <td style="font-size: 10px;">{{$result->body}}</td>
+      <td><form action="{{ action('TodosController@edit', $result) }}" method="post">
+          {{ csrf_field() }}
+          {{ method_field('get') }}
+          <button type="submit" class="btn btn-primary btn-sm">編集</button>
+      </form>
+      </td>
+      <td><form action="{{url('/todos', $result->id)}}" method="post">
+          {{ csrf_field() }}
+          {{ method_field('delete') }}
+          <button type="submit" class="btn btn-danger btn-sm">削除</button>
+      </form>
+      </td>
+    </tr>
+    @endforeach
+  </table>
 
+</div>
 @endsection
