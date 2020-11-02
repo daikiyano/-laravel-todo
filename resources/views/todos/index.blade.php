@@ -140,7 +140,6 @@
  
   </tr>
     @foreach ($results as $result)
-    <!-- <input type="datetime-local" id="meeting-time" value="{{$todo->date}}" name="date"> -->
     <tr>
     <td> 
       @if ($result->result_status == 1)
@@ -152,8 +151,7 @@
       @endif
       </td>
       <td>{{$result->company}}</td>
-      <!-- {{$todo->interview_status}} -->
-      <!-- <td> <span class="badge badge-pill badge-success">説明会</span> </td> -->
+      
       <td> 
       @if ($result->interview_status == 1)
       <span class="label label-success">説明会</span> 
