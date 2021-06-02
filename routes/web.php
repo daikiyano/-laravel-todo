@@ -15,6 +15,10 @@
 //     return view('welcome');
 // });
 
+if(config('app.env') === 'prod'){
+  URL::forceScheme('https');
+}
+
 
 Route::get('/','TodosController@index'); 
 Route::resource('todos','TodosController');
